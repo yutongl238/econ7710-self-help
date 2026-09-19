@@ -273,7 +273,16 @@ document.getElementById('dnext').onclick=()=>{di=(di+1)%diagnostic.length;render
 function showPage(id){['home','topics','dists','diag'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='topics')renderTopic();if(id==='dists')renderDists()}
 document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 document.getElementById('filter').onchange=renderDists;
-renderDists();renderDiag();window.addEventListener('load',()=>renderDists());
+renderDists();
+renderDiag();
+window.addEventListener('load',()=>{
+  // KaTeX and its auto-render extension are loaded with defer. Re-render quiz
+  // content after those scripts are definitely available so \(...\) is not
+  // left visible as raw text on the initial question.
+  renderDists();
+  renderDiag();
+  renderProblem();
+});
 
 const params=new URLSearchParams(location.search);
 if(params.get('topic')){active=params.get('topic');showPage('topics')} else renderTopic();
