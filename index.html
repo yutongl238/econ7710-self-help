@@ -68,6 +68,10 @@ button:hover,.navbtn:hover{border-color:#aeb7c7} .active{background:var(--accent
 .core .formula{line-height:1.65;overflow-x:auto;overflow-y:hidden}
 .core .formula .katex{font-size:1.05em}
 
+
+.feedback .katex{font-size:1em}
+.feedback span{line-height:1.6}
+
 </style>
 </head>
 <body>
@@ -149,8 +153,8 @@ function renderTopic(){
  const nums=document.getElementById('nums');
  for(let j=0;j<5;j++){let b=document.createElement('button');b.textContent=j+1;b.onclick=()=>{pi=j;renderProblem()};nums.appendChild(b)}
  document.getElementById('check').onclick=check;
- document.getElementById('hint').onclick=()=>document.getElementById('feedback').innerHTML='<b>Hint:</b> '+t.problems[pi].hint;
- document.getElementById('solution').onclick=()=>document.getElementById('feedback').innerHTML='<b>Solution:</b> '+t.problems[pi].solution;
+ document.getElementById('hint').onclick=()=>renderLabeledFeedback('Hint:',t.problems[pi].hint);
+ document.getElementById('solution').onclick=()=>renderLabeledFeedback('Solution:',t.problems[pi].solution);
  document.getElementById('prev').onclick=()=>{pi=(pi+4)%5;renderProblem()};
  document.getElementById('next').onclick=()=>{pi=(pi+1)%5;renderProblem()};
  renderProblem();
@@ -232,6 +236,16 @@ function renderInlineMath(el, text){
   if(last<text.length){
     el.appendChild(document.createTextNode(text.slice(last)));
   }
+}
+function renderLabeledFeedback(label, content){
+  const f=document.getElementById('feedback');
+  f.replaceChildren();
+  const b=document.createElement('b');
+  b.textContent=label+' ';
+  f.appendChild(b);
+  const span=document.createElement('span');
+  f.appendChild(span);
+  renderInlineMath(span,content);
 }
 function renderDists(){
  const v=document.getElementById('filter').value,g=document.getElementById('distgrid');g.innerHTML='';
